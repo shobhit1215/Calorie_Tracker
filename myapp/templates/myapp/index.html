@@ -1,36 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>Calorie_Meter</title>
 </head>
+
 <body>
-   <div class="container">
-       <div class="row">
-           <div class="col-md-12">
-            <form method="POST">
-                <div class="form-group row">
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Calorie Meter</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Login</a>
+                    </li>
+                    {% endif %}
 
-                
-                {% csrf_token %}
-                <label  class="col-md-2" style="margin-top:10px;">
-                    Select Food to  Add            
-                 </label>
-                <select class="col-md-6 form-control" name="food_consume" id="food_consume">
-                 {% for food in foods %}
-                    <option value="{{food.name}}">{{food.name}}</option>
-                 {% endfor %}
-                </select>
-                <button class="btn btn-success"type="submit" style="margin-top:10px;">Add</button>
+                </ul>
+
             </div>
-            </form>
-          
+        </div>
+    </nav> -->
+    <div class="container">
 
-           </div>
-       </div>
+        <br><br>
+        <h4>Calorie Goal</h4>
+        <br>
+        <div class="row">
+            <div class="col-md-9 offset-1">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form method="POST">
+                    <div class="form-group row">
+
+
+                        {% csrf_token %}
+                        <label class="col-md-2" style="margin-top:10px;">
+                            Select Food to Add
+                        </label>
+                        <select class="col-md-6 form-control" name="food_consume" id="food_consume">
+                            {% for food in foods %}
+                            <option value="{{food.name}}">{{food.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-success" type="submit" style="margin-top:10px;">Add</button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-6">
@@ -38,7 +78,7 @@
                     <h4>Today's Consumption</h4>
                 </div>
                 <table id="table" class="table table-striped table-primary">
-                    <tr >
+                    <tr>
                         <th>Food Item</th>
                         <th>Carbs(gm)</th>
                         <th>Proteins(gm)</th>
@@ -48,25 +88,25 @@
 
                     <tr>
                         {% for c in consumed_food %}
-                        <tr>
-                            <td>{{c.food_consumed.name}}</td>
-                            <td>{{c.food_consumed.carbs}}</td>
-                            <td>{{c.food_consumed.protein}}</td>
-                            <td>{{c.food_consumed.fats}}</td>
-                            <td>{{c.food_consumed.calories}}</td>
-                        </tr>
-                        {% endfor %}
-                        <tr>
-                            <td id="name">
-                                <b>Total</b>
+                    <tr>
+                        <td>{{c.food_consumed.name}}</td>
+                        <td>{{c.food_consumed.carbs}}</td>
+                        <td>{{c.food_consumed.protein}}</td>
+                        <td>{{c.food_consumed.fats}}</td>
+                        <td>{{c.food_consumed.calories}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td id="name">
+                            <b>Total</b>
 
-                            </td>
-                            <td id="totalCarbs"><b></b></td>
-                            <td id="totalProtein"><b></b></td>
-                            <td id="totalFats"><b></b></td>
-                            <td id="totalCalories"><b></b></td>
-                            
-                        </tr>
+                        </td>
+                        <td id="totalCarbs"><b></b></td>
+                        <td id="totalProtein"><b></b></td>
+                        <td id="totalFats"><b></b></td>
+                        <td id="totalCalories"><b></b></td>
+
+                    </tr>
                     </tr>
 
                 </table>
@@ -77,34 +117,32 @@
 
         </div>
 
+    </div>
 
-   </div>
-   
-   
+
 </body>
 
 <script>
-    table=document.getElementById("table");
-    var carbs=0,proteins=0,fats=0,calories=0;
-    for( var i=2 ; i<table.rows.length-1;i++)
-    {
-        
-        carbs +=parseFloat(table.rows[i].cells[1].textContent)
-        carbs=Math.round(carbs);
+    table = document.getElementById("table");
+    var carbs = 0, proteins = 0, fats = 0, calories = 0;
+    for (var i = 2; i < table.rows.length - 1; i++) {
+
+        carbs += parseFloat(table.rows[i].cells[1].textContent)
+        carbs = Math.round(carbs);
         proteins += parseFloat(table.rows[i].cells[2].textContent)
-        proteins=Math.round(proteins);
+        proteins = Math.round(proteins);
         fats += parseFloat(table.rows[i].cells[3].textContent)
-        fats=Math.round(fats);
+        fats = Math.round(fats);
         calories += parseFloat(table.rows[i].cells[4].textContent)
-        calories=Math.round(calories);
-        
+        calories = Math.round(calories);
+
     }
-   
-    
-    document.getElementById("totalCarbs").innerHTML=carbs;
-    document.getElementById("totalProtein").innerHTML=proteins;
-    document.getElementById("totalFats").innerHTML=fats;
-    document.getElementById("totalCalories").innerHTML=calories;
+
+
+    document.getElementById("totalCarbs").innerHTML = '<b>' + carbs + '(gm)</b>';
+    document.getElementById("totalProtein").innerHTML = '<b>' + proteins + '(gm)</b>';
+    document.getElementById("totalFats").innerHTML = '<b>' + fats + '(gm)</b>';
+    document.getElementById("totalCalories").innerHTML = '<b>' + calories + '(Kcal)</b>';
 </script>
 
 

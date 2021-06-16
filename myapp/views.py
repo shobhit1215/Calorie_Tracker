@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Food,Consume
 
 
@@ -19,3 +19,4 @@ def index(request):
         consumed_food = Consume.objects.filter(user=request.user)
         foods = Food.objects.all()
     return render(request,'myapp/index.html',{'foods':foods,'consumed_food':consumed_food})
+
